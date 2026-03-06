@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pollos Rey - El Sabor de la Tradición</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* CSS INTEGRADO */
+        :root {
+            --primary: #e63946;
+            --secondary: #f1faee;
+            --accent: #a8dadc;
+            --dark: #1d3557;
+            --text: #457b9d;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--secondary);
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: var(--white);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-container img {
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .logo-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        /* Main Content Wrapper */
+        .page-section {
+            display: none;
+            padding: 2rem 5%;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Slider */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            overflow: hidden;
+            margin-bottom: 3rem;
+            border-radius: 15px;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.7);
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .slider-btn:hover { background: var(--primary); color: white; }
+        .prev { left: 10px; }
+        .next { right: 10px; }
+
+        /* General Layout Rows (Z-Pattern) */
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+
+        .row.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .row-img {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        /* Layout for specific widths (70/30) */
+        .row-img.wide { flex: 0 0 70%; }
+        .row-text.narrow { flex: 0 0 calc(30% - 40px); }
+
+        .row-img img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .row-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .row-text h2 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .btn-action {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.8rem 2rem;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .btn-action:hover {
+            transform: scale(1.05);
+            background-color: #c92a35;
+        }
+
+        /* Titles */
+        .page-title {
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--dark);
+        }
+
+        /* Form Contacts */
+        .contact-form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: var(--white);
+            padding: 4rem 2rem 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 2rem;
+        }
+
+        .footer-col h4 {
+            margin-bottom: 1.2rem;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+        }
+
+        .footer-col p, .footer-col li {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-bottom: 0.5rem;
+            list-style: none;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 1rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 2rem 0;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .row-img.wide, .row-text.narrow {
+                flex: 1 1 100%;
+            }
+            .row {
+                flex-direction: column !important;
+            }
+            .slider-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="imgPolloRey/logo.jpeg" alt="Logo Pollos Rey">
+            <span class="logo-name"></span>
+        </div>
+        <nav>
+            <ul>
+                <li><a onclick="showPage('index')">Inicio</a></li>
+                <li><a onclick="showPage('productos')">Establecimientos</a></li>
+                <!-- <li><a onclick="showPage('productos')">Productos Bachoco</a></li> -->
+                <li><a onclick="showPage('nosotros')">Pollos Rey</a></li> 
+                <!-- <li><a onclick="showPage('contactos')">Contactos</a></li> -->
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- SECCIÓN INICIO (index.html) -->
+        <section id="index" class="page-section active">
+            <div class="slider-container">
+                <div class="slider" id="mainSlider">
+                    <div class="slide"><img src="imgPolloRey/logo.jpeg" alt="Slider 0" style="object-fit: contain; background-color:white;"></div>
+                    <div class="slide"><img src="imgPolloRey/producto_1.jpeg" alt="Slider 1"></div>
+                    <div class="slide"><img src="imgPolloRey/producto_2.jpeg" alt="Slider 2"></div>
+                    <div class="slide"><img src="imgPolloRey/producto_10.jpeg" alt="Slider 3"></div>
+                    <div class="slide"><img src="imgPolloRey/producto_4.jpeg" alt="Slider 4"></div>
+                    <div class="slide"><img src="imgPolloRey/producto_11.jpeg" alt="Slider 4"></div>
+
+                </div>
+                <button class="slider-btn prev" onclick="moveSlide(-1)"><i data-lucide="chevron-left"></i></button>
+                <button class="slider-btn next" onclick="moveSlide(1)"><i data-lucide="chevron-right"></i></button>
+            </div>
+
+            <div class="rows-container">
+               
+                <div class="row">
+                    <div class="row-img">
+                        <img src="imgPolloRey/producto_1.jpeg" alt="Servicios" style="height: 400px;">
+                    </div>
+                    <div class="row-text">
+                        <h2>¡Deliciosos Pollos Asados y en Barbacoa!</h2>
+                        <p>
+                            <br>Te ofrecemos exquisitos pollos asados preparados con el unico y mejor sazon de Ajalpan.
+                            <br>Pruebalos no te quedes con el antojo de deleitar un pollo jugoso y sabroso, en sus diferentes presentaciones:
+                            <br>Chiltepin
+                            <br>Encacahutado
+                            <br>Chipotle
+                            <br>BBQ
+                            <br>Tamarindo
+                            <br>Especial
+
+                            <h4>Si algo nos caracteriza es el sazon que le ponemos  en cada pollo. </h4>
+
+                        </p>
+                        <a href="#" class="btn-action" onclick="showPage('productos')">Ver establecimientos</a>
+                    </div>
+                </div>
+                <div class="row reverse">
+                    <div class="row-img">
+                        <img src="imgPolloRey/producto_11.jpeg" alt="Servicios" style="height: 400px;">
+                    </div>
+                    <div class="row-text">
+                        <h2>¡Deliciosos Pollos en Barbacoa!</h2>
+                        <p>
+                            <br>Te ofrecemos exquisitos pollos en Barbacoa preparados con el unico y mejor sazon de Ajalpan.
+                            <br>Pruebalos no te quedes con el antojo de deleitar un pollo jugoso y sabroso.
+
+                            <h4>Si algo nos caracteriza es el sazon que le ponemos  en cada pollo. </h4>
+
+                        </p>
+                        <a href="#" class="btn-action" onclick="showPage('productos')">Ver establecimientos</a>
+                    </div>
+                </div>
+               
+                <div class="row">
+                    <div class="row-img">
+                        <img src="imgPolloRey/producto_2.jpeg" alt="Productos">
+                    </div>
+                    <div class="row-text">
+                        <h2>¡Deliciosas Patitas y Pescuezos Asados!</h2>
+                        <p>
+                         <br>¿Tienes antojo de algo sabroso, jugoso y bien doradito? 🤤   
+                         <br>¡Ven y prueba nuestras patitas y pescuezos de pollo asados preparados con un sazón especial que te encantará!
+                         <br><br>📍 Calidad, sabor y buen precio en cada porción.
+                         <br>💬 ¡Haz tu pedido hoy mismo y disfruta de algo realmente delicioso, no te quedes con el antojo!
+                        </p>
+                        <a href="#" class="btn-action" onclick="showPage('productos')">Ver establecimientos</a>
+                    </div>
+                </div>
+                 <div class="row reverse">
+                    <div class="row-img">
+                        <img src="imgPolloRey/producto_4.jpeg" alt="Servicios" style="height: 400px;">
+                    </div>
+                    <div class="row-text">
+                        <h2>¡Deliciosos pollos preparados!</h2>
+                        <p>
+                            <br>¿Se te antoja un pollo preparado, ven por en  el o comunicate con nosotros al 2382530119 o al 2382152800 para que lo llevemos hasta la puerta de tu casa? 🤤
+                            <br>¡Tenemos los mejores pollos preparados, crujientes por fuera y jugosas por dentro!
+
+                            Sabores disponibles:
+                            <br>🌶️ Chiltepin – Para los que aman el picante intenso.
+                            <br>🔥 Encacahuatado – El clásico sabor picante y delicioso.
+                            <br>🌶️ Chipotle – Con un toque ahumado y lleno de sabor.
+                            <br><br>📲 Haz tu pedido ahora y disfruta de riquisimos pollos.
+                        </p>
+                        <a href="#" class="btn-action" onclick="showPage('productos')">Ver establecimientos</a>
+                    </div>
+                </div>
+             
+                <div class="row">
+                    <div class="row-img">
+                        <img src="imgPolloRey/logo.jpeg" alt="Nosotros">
+                    </div>
+                    <div class="row-text">
+                        <h2>Conoce a Pollos Rey</h2>
+                        <p>
+                            Pollos Rey – El Rey del Sabor
+                            <br>En Pollos Rey nos dedicamos a preparar deliciosos pollos asados con un sazón especial, comprometido con ofrecer calidad, buen servicio y el auténtico sabor casero, ideal para disfrutar en familia o con amigos.
+                                <br>🍗 Nuestros productos:
+
+                                <br>Pollos asados y en barbacoa recién hechos
+                                <br>Pollos preparados (Chiltepin,Encacahuatado y Chipotle)
+                                <br>Patitas y pescuezos asados
+                                <br>Salsas y complementos
+                        </p>
+                        <a href="#" class="btn-action" onclick="showPage('nosotros')">Ver mas información</a>
+                    </div>
+                </div>
+               
+                <div class="row reverse">
+                    <div class="row-img">
+                        <img src="imgPolloRey/producto_9.jpeg" alt="Contacto">
+                    </div>
+                    <div class="row-text">
+                        <h2>¡Contáctanos hoy mismo!</h2>
+                        <p>
+                            En pollos Rey estamos listos para atenderte con los deliciosos pollos asados y en Barbacoa.
+                            <br>📍 Dirección: Calle Guillermo Prieto #438 Ajalpan Puebla.
+                            <br>Celular: llama al 2382530119 o al 2382152800
+                           <br> <h4>Si algo nos caracteriza es el sazon que le ponemos  en cada pollo. </h4>
+                        </p>
+                        <a href="#" class="btn-action" onclick="showPage('productos')">Ver establecimientos</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+      
+
+        <!-- SECCIÓN PRODUCTOS -->
+        <section id="productos" class="page-section">
+            <h1 class="page-title">¿Donde nos encontramos?</h1>
+            <h3>Las siguientes direcciones son lugares en donde nos encontramos vendiendo los riquisimos pollos.</h3>
+            <!-- <div id="productos-content"></div> -->
+             <br>
+             <div class="row">
+                 <div class="row-img imgWidthClass">
+                    <img src="imgPolloRey/producto_8.jpeg" alt="${titlePrefix} ${i}">
+                 </div>
+                <div class="row-text textWidthClass">
+                     <h2>Pollos asados y en barbacoa</h2>
+                     <p>Nos encontramos en la siguiente Dirección
+                        <br>📍 Dirección:
+                        <br>Calle 5 de mayo con Revolución, Ajalpan Puebla. Frente a la imprenta Mireya.
+                        <br><br>📱 Pedidos al celular:
+                        <br>2382152800 o 2382530119
+                       <br> <br>🚚 Servicio a domicilio disponible para que disfrutes nuestros productos sin salir de casa.
+
+                     </p>
+                </div>
+            </div>
+             <div class="row reverse">
+                 <div class="row-img imgWidthClass">
+                   <img src="imgPolloRey/producto_3.jpeg" alt="${titlePrefix} ${i}">
+                 </div>
+                <div class="row-text textWidthClass">
+                     <h2>Pollos asados y en barbacoa</h2>
+                     <p>Nos encontramos en la siguiente Dirección
+                        <br>📍 Dirección:
+                        <br>Calle 5 de febrero con la Antonio Ruanova Ajalpan, Puebla. A dos cuadras del mercado.
+                        <br><br>📱 Pedidos al celular:
+                        <br>2382152800 o 2382530119
+                       <br> <br>🚚 Servicio a domicilio disponible para que disfrutes nuestros productos sin salir de casa.
+
+                     </p>
+                </div>
+            </div>
+            <div class="row reverse">
+                 <div class="row-img imgWidthClass">
+                    <img src="imgPolloRey/producto_6.jpeg" alt="${titlePrefix} ${i}">
+                 </div>
+                <div class="row-text textWidthClass">
+                     <h2>Pollos asados y en barbacoa</h2>
+                     <p>Nos encontramos en la siguiente Dirección
+                        <br>📍 Dirección:
+                        <br>Calle Revolución con 5 de mayo Ajalpan, Puebla. Entrada a San Miguel
+                        <br><br>📱 Pedidos al celular:
+                        <br>2382152800 o 2382530119
+                       <br> <br>🚚 Servicio a domicilio disponible para que disfrutes nuestros productos sin salir de casa.
+
+                     </p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- SECCIÓN NOSOTROS -->
+        <section id="nosotros" class="page-section">
+            <h1 class="page-title">Pollos rey</h1>
+            <!-- <div id="nosotros-content"></div> -->
+             <h3>
+                Pollos Rey – El Rey del Sabor 🍗
+             </h3>
+             <h4>
+                En Pollos Rey nos dedicamos a preparar deliciosos pollos asados y en barbacoa con un sazón especial, doraditos por fuera y jugosos por dentro, cocinados lentamente para brindarte el mejor sabor en cada bocado. 😋🔥
+
+                <br>Somos un negocio con mas de 10 años de trayectoria, comprometido con ofrecer calidad, buen servicio y el auténtico sabor casero, ideal para disfrutar en familia o con amigos.
+
+                <br><br>🍗 Nuestros productos:
+                <br>✅Pollos asados y en barbacoa recién hechos.
+                <br>✅Patitas y pescuezos asados
+                <br>✅Salsas y complementos
+
+                <br>Sabores disponibles:
+                <br>🌶️ Chiltepin – Para los que aman el picante intenso.
+                <br>🔥 Encacahuatado – El clásico sabor picante y delicioso.
+                <br>🌶️ Chipotle – Con un toque ahumado y lleno de sabor.
+                <br><br>🚚 Servicio a domicilio disponible para que disfrutes nuestros productos sin salir de casa.
+                <br><br>📍 Direcciónes:
+                <br>Calle Revolución con 5 de mayo Ajalpan, Puebla. Entrada a San Miguel.
+                <br>Calle 5 de febrero con la Antonio Ruanova Ajalpan, Puebla. A dos cuadras del mercado.
+                <br>Calle 5 de mayo con Revolución, Ajalpan Puebla. Frente a la imprenta Mireya.
+                <br><br>📱 Pedidos al celular:
+                <br>2382152800 o 2382530119
+                <br><br>⏰ Atención con el mejor sabor y calidad.
+                <br><br>🔥 Pollos Rey – Donde el sabor manda. ¡Haz tu pedido y disfruta! 🍗👑
+             </h4>
+        </section>
+    </main>
+
+        <footer style="background: var(--dark);">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Pollos Rey</h4>
+                <p>El mejor sabor de la región desde el 2001.</p>
+                <div class="social-icons">
+                    <i data-lucide="facebook"></i>
+                    <!-- <i data-lucide="instagram"></i>
+                    <i data-lucide="twitter"></i> -->
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Enlaces Rápidos</h4>
+                <ul>
+                    <li><a onclick="showPage('index')" style="color:#ccc; cursor:pointer">Inicio</a></li>
+                    <!-- <li><a onclick="showPage('servicios')" style="color:#ccc; cursor:pointer">Servicios</a></li> -->
+                    <li><a onclick="showPage('productos')" style="color:#ccc; cursor:pointer">Establecimientos</a></li>
+                    <li><a onclick="showPage('nosotros')" style="color:#ccc; cursor:pointer">Conoce a Pollos Rey</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contacto</h4>
+                <p><i data-lucide="map-pin" size="14"></i> Calle Guillermo Prieto #438</p>
+                <p><i data-lucide="phone" size="14"></i>2382530119 o al 2382152800</p>
+                <!-- <p><i data-lucide="mail" size="14"></i> info@pollosrey.com</p> -->
+            </div>
+            <div class="footer-col">
+                <h4>Horario</h4>
+                <p>Sábado: 9:00 AM - 4:00 PM</p>
+                
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy;Pollos Rey
+        </div>
+    </footer>
+
+    <script>
+        // JAVASCRIPT INTEGRADO
+
+        // --- Navegación entre páginas ---
+        function showPage(pageId) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            // Mostrar la seleccionada
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        // --- Slider Logic ---
+        let currentSlide = 0;
+        const totalSlides = 6;
+        const slider = document.getElementById('mainSlider');
+
+        function moveSlide(direction) {
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        // Auto-slide cada 5 segundos
+        setInterval(() => moveSlide(1), 5000);
+
+        // --- Generación Dinámica de Contenido (Servicios, Productos, Nosotros) ---
+        
+        function generateRows(containerId, count, imgWidthClass, textWidthClass, titlePrefix) {
+            const container = document.getElementById(containerId);
+            let html = '';
+            for (let i = 1; i <= count; i++) {
+                const isReverse = i % 2 === 0 ? 'reverse' : '';
+                html += `
+                    <div class="row ${isReverse}">
+                        <div class="row-img ${imgWidthClass}">
+                            <img src="https://placehold.co/800x450/${i%2==0 ? 'e63946' : '1d3557'}/white?text=${titlePrefix}+${i}" alt="${titlePrefix} ${i}">
+                        </div>
+                        <div class="row-text ${textWidthClass}">
+                            <h2>${titlePrefix} de Calidad ${i}</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        // Ejecutar generación al cargar
+        window.onload = function() {
+            lucide.createIcons();
+            
+            // Servicios: 3 filas, imagen 70%
+            generateRows('servicios-content', 3, 'wide', '', 'Servicio');
+            
+            // Productos: 6 filas, imagen 70%
+            generateRows('productos-content', 6, 'wide', '', 'Producto');
+            
+            // Nosotros: 4 filas, imagen 70%, texto 30%
+            generateRows('nosotros-content', 4, 'wide', 'narrow', 'Historia');
+        }
+    </script>
+</body>
+</html>
